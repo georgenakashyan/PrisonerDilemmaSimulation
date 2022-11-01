@@ -41,7 +41,7 @@ p = sum(pDict.values()) / len(pDict)
 
 #Output of result data
 print("\n[============================= Results =============================]")
-print("\nMean proportion of cooperators after", turns, "turns for", games, "games:", p)
+print("\nMean proportion of cooperators after", turns, "turns for", games, "games: ", p)
 
 #Video of evolution
 make_simulation_video(g, payoff, turns, initCoop, rewireChance, "Prisoner's Dilemma", 5)
