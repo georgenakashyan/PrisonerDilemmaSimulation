@@ -10,7 +10,7 @@ from evolutionary_game_theory import one_replica_simulation, _compute_all_payoff
 
 path = os.path.split(os.path.realpath(__file__))
 
-def _plot_time_serie(G, W, steps, x0, beta, ax, color):
+def _plot_time_serie(G, W, steps, x0, beta, ax, color, choice_factor):
     """
     Plots a single time-series
     Parameters
@@ -27,17 +27,19 @@ def _plot_time_serie(G, W, steps, x0, beta, ax, color):
     ax : ax
     color: str
         Color of the plot
+    choice_factor : int
+        Choice of how nodes will decide to update their strategy
     Returns
     -------
     p : float
         Mean density
     """
-    p, time_series = one_replica_simulation(G, W, steps, x0, beta, stationary=0.0)
+    p, time_series = one_replica_simulation(G, W, steps, x0, beta, choice_factor, stationary=0.0)
     ax.plot(time_series, c=color)
     return p
 
 
-def plot_time_series(G, W, steps, x0, beta, games, title, saving_path=True):
+def plot_time_series(G, W, steps, x0, beta, games, choice_factor, title, saving_path=True):
     """
     Makes times series plots
     Parameters
@@ -53,6 +55,8 @@ def plot_time_series(G, W, steps, x0, beta, games, title, saving_path=True):
         Models the importance of the difference of payoffs in a game
     games : int
         Number of games to run and then graph.
+    choice_factor : int
+        Choice of how nodes will decide to update their strategy
     title : str
         Title of the plot
     saving_path : bool, default True
@@ -65,7 +69,7 @@ def plot_time_series(G, W, steps, x0, beta, games, title, saving_path=True):
     plt.figure(figsize=(10, 5))
     ax = plt.gca()
     for T, c in tuple(zip(np.linspace(1, 10, games), mcolors.TABLEAU_COLORS.keys())):
-        p = _plot_time_serie(G, W, steps=steps, x0=x0, beta=beta, ax=ax, color=c)
+        p = _plot_time_serie(G, W, steps=steps, x0=x0, beta=beta, ax=ax, color=c, choice_factor=choice_factor)
         means_dict[T] = p
     plt.title(title)
     plt.xlabel('Time Steps')
@@ -74,7 +78,7 @@ def plot_time_series(G, W, steps, x0, beta, games, title, saving_path=True):
         plt.savefig(os.path.normpath(path[0] + "/reports/figures/time_series/" + title + '.jpeg'), dpi=500)
     return means_dict
 
-def make_simulation_video(G, W, steps, x0, beta, name, fps):
+def make_simulation_video(G, W, steps, x0, beta, choice_factor, name, fps):
     """
     Makes a video with the simulation evolution of the nodes strategies
     Parameters
@@ -88,6 +92,8 @@ def make_simulation_video(G, W, steps, x0, beta, name, fps):
         Initial density of cooperators
     beta : float
         Models the importance of the difference of payoffs in a game
+    choice_factor : int
+        Choice of how nodes will decide to update their strategy
     name : str
         Name of the video
     fps : int
@@ -114,7 +120,13 @@ def make_simulation_video(G, W, steps, x0, beta, name, fps):
         payoffs = _compute_all_payoffs(G, W, strategy)
         for i in G.nodes():
             j = random.sample(list(G.neighbors(i)), 1)[0]  # random selected neighbor
-            wi, wj = payoffs.get(i), payoffs.get(j)  # payoffs of each node
+            
+            if (choice_factor == 1):
+                # For updating probability based on payoff difference and beta:
+                wi, wj = payoffs.get(i), payoffs.get(j)  # payoffs of each node
+            elif (choice_factor == 2):
+                # For updating probability based on popularity and beta:
+                wi, wj = G.degree(i), G.degree(j)  # edge degrees of each node
             pij = _fermi_updating_rule(wi, wj, beta)  # probability of node i to adopt j strategy
             if np.random.random() < pij:
                 new_strategy[i] = strategy.get(j)

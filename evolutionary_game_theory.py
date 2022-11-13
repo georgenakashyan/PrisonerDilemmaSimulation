@@ -45,7 +45,7 @@ def _fermi_updating_rule(wi, wj, beta):
     return 1 / (1 + np.e ** (-beta * (wj - wi)))
 
 
-def one_replica_simulation(G, W, steps, x0, beta, stationary=0.9):
+def one_replica_simulation(G, W, steps, x0, beta, choice_factor, stationary=0.9):
     """
     Runs one replica simulation of the evolutionary game theory simulation
     Parameters
@@ -59,6 +59,8 @@ def one_replica_simulation(G, W, steps, x0, beta, stationary=0.9):
         Proportion of initial nodes using cooperative strategy
     beta : float
         Parameter that models the importance of the difference in Fermi updating rule
+    choice_factor : int
+        Choice of how nodes will decide to update their strategy
     stationary : float
         Proportion of epochs that correspond to the stationary phase
     Returns
@@ -78,7 +80,13 @@ def one_replica_simulation(G, W, steps, x0, beta, stationary=0.9):
         payoffs = _compute_all_payoffs(G, W, strategy)
         for i in G.nodes():
             j = random.sample(list(G.neighbors(i)), 1)[0]  # random selected neighbor
-            wi, wj = payoffs.get(i), payoffs.get(j)  # payoffs of each node
+            
+            if (choice_factor == 1):
+                # For updating probability based on payoff difference and beta:
+                wi, wj = payoffs.get(i), payoffs.get(j)  # payoffs of each node
+            elif (choice_factor == 2):
+                # For updating probability based on popularity and beta:
+                wi, wj = G.degree(i), G.degree(j)  # edge degrees of each node
             pij = _fermi_updating_rule(wi, wj, beta)  # probability of node i to adopt j strategy
             if np.random.random() < pij:
                 new_strategy[i] = strategy.get(j)
@@ -87,7 +95,7 @@ def one_replica_simulation(G, W, steps, x0, beta, stationary=0.9):
     return p, time_series
 
 
-def multi_replica_simulation(G, W, steps, x0, beta, replicas):
+def multi_replica_simulation(G, W, steps, x0, beta, replicas, choice_factor):
     """
     Runs one a given number of  simulation replicas of the evolutionary game theory simulation
     Parameters
@@ -103,12 +111,14 @@ def multi_replica_simulation(G, W, steps, x0, beta, replicas):
         Parameter that models the importance of the difference in Fermi updating rule
     replicas : int
         Number of replicas to execute
+    choice_factor : int
+        Choice of how nodes will decide to update their strategy
     Returns
     -------
     p_mean : float
         Mean proportion of nodes following a cooperative strategy
     """
-    return np.mean([one_replica_simulation(G, W, steps, x0, beta)[0] for _ in range(replicas)])
+    return np.mean([one_replica_simulation(G, W, steps, x0, beta, choice_factor)[0] for _ in range(replicas)])
 
 
 def _compute_all_payoffs(G, W, strategy):
