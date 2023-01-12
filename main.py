@@ -42,6 +42,7 @@ while True:
 
 # payoff matrix
 payoff = [[0, 1.8], [-0.3, 1.5]]
+# ?: payoff = [[1, 0], [25, 0]]
 
 # running the simulation and making time series plot
 pDict = plot_time_series(g, payoff, turns, init_coop, rewireChance, games, choice_factor, "Proportion of Cooperators per Time-Step")
