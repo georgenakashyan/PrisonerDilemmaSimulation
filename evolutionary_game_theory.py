@@ -86,7 +86,9 @@ def one_replica_simulation(G, W, steps, x0, beta, choice_factor, stationary=0.9)
                 wi, wj = payoffs.get(i), payoffs.get(j)  # payoffs of each node
             elif (choice_factor == 2):
                 # For updating probability based on popularity and beta:
-                wi, wj = G.degree(i), G.degree(j)  # edge degrees of each node
+                # ?: backup wi, wj = G.degree(i), G.degree(j)  # edge degrees of each node
+                wi, wj = payoffs.get(i), payoffs.get(j)  # payoffs of each node
+                beta = len(list(G.neighbors(j)))/len(list(G.nodes))
             pij = _fermi_updating_rule(wi, wj, beta)  # probability of node i to adopt j strategy
             if np.random.random() < pij:
                 new_strategy[i] = strategy.get(j)
