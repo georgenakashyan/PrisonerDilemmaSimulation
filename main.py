@@ -41,6 +41,7 @@ while True:
         break
 
 # payoff matrix
+# !: [D:D, D:C], [C:D, C:C]
 payoff = [[0, 1.8], [-0.3, 1.5]]
 # ?: payoff = [[1, 0], [25, 0]]
 
