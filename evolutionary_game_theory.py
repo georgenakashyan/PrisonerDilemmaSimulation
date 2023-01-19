@@ -79,19 +79,21 @@ def one_replica_simulation(G, W, steps, x0, beta, choice_factor, stationary=0.9)
         new_strategy = dict()
         payoffs = _compute_all_payoffs(G, W, strategy)
         for i in G.nodes():
-            j = random.sample(list(G.neighbors(i)), 1)[0]  # random selected neighbor
-            
-            if (choice_factor == 1):
-                # For updating probability based on payoff difference and beta:
-                wi, wj = payoffs.get(i), payoffs.get(j)  # payoffs of each node
-            elif (choice_factor == 2):
-                # For updating probability based on popularity and beta:
-                # ?: backup wi, wj = G.degree(i), G.degree(j)  # edge degrees of each node
-                wi, wj = payoffs.get(i), payoffs.get(j)  # payoffs of each node
-                beta = len(list(G.neighbors(j)))/len(list(G.nodes))
-            pij = _fermi_updating_rule(wi, wj, beta)  # probability of node i to adopt j strategy
-            if np.random.random() < pij:
-                new_strategy[i] = strategy.get(j)
+            # test: random selected neighbor
+            ## ?: j = random.sample(list(G.neighbors(i)), 1)[0]
+            j_List = list(G.neighbors(i))
+            for j in j_List:
+                if (choice_factor == 1):
+                    # For updating probability based on payoff difference and beta:
+                    wi, wj = payoffs.get(i), payoffs.get(j)  # payoffs of each node
+                elif (choice_factor == 2):
+                    # For updating probability based on popularity and beta:
+                    # ?: backup wi, wj = G.degree(i), G.degree(j)  # edge degrees of each node
+                    wi, wj = payoffs.get(i), payoffs.get(j)  # payoffs of each node
+                    beta = len(list(G.neighbors(j)))/len(list(G.nodes))
+                pij = _fermi_updating_rule(wi, wj, beta)  # probability of node i to adopt j strategy
+                if np.random.random() < pij:
+                    new_strategy[i] = strategy.get(j)
         strategy.update(new_strategy)  # update strategies
     p = np.mean(time_series)
     return p, time_series
