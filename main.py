@@ -10,10 +10,10 @@ print("[=================== Prisoner's Dilemma Game =======================]")
 while True:
     graphChoice = input("\nWhich graph would you like to simulate? (ws for Watts-Strogatz or fb for Facebook): ")
     if (graphChoice == "ws"):
-        print("\nNote: Default values for these questions are: 5000 Nodes, 4 Edges Per Node (on average), 10 games, 25 turns, 0.5 Cooperators.")
+        print("\nNote: Default values for these questions are: 1000 Nodes, 4 Edges Per Node (on average), 10 games, 25 turns, 0.5 Cooperators.")
         nodes = int(input("\nNumber of players/nodes (positive integer): "))
         avgEdgePerNode = int(input("\nNumber of average edges per node (positive integer): "))
-        g = nx.watts_strogatz_graph(nodes, avgEdgePerNode, 0.5)
+        g = nx.watts_strogatz_graph(nodes, avgEdgePerNode, 0.1)
         break
     elif (graphChoice == "fb"):
         print("\nNote: Default values for these questions are: 10 Games, 25 Turns, 0.5 Cooperators.")
