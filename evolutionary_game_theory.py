@@ -79,8 +79,6 @@ def one_replica_simulation(G, W, steps, x0, beta, choice_factor, stationary=0.9)
         new_strategy = dict()
         payoffs = _compute_all_payoffs(G, W, strategy)
         for i in G.nodes():
-            # test: random selected neighbor
-            ## ?: j = random.sample(list(G.neighbors(i)), 1)[0]
             j_List = list(G.neighbors(i))
             for j in j_List:
                 if (choice_factor == 1):
