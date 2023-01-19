@@ -3,11 +3,11 @@ This module contains functions to run a simulation of an evolutionary game theor
 a Fermi rule approximation strategy on a given network.
 """
 
-import networkx as nx
+#import networkx as nx
 import numpy as np
-import random
-import matplotlib.pyplot as plt
-import scipy as sp
+#import matplotlib.pyplot as plt
+#import scipy as sp
+import logging
 from collections import deque
 
 def _count_coop(strategies):
