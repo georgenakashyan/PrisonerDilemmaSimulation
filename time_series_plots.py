@@ -66,14 +66,14 @@ def plot_time_series(G, W, steps, x0, beta, games, choice_factor, title, saving_
         Mean proportion of cooperators at every stage
     """
     means_dict = dict()
-    plt.figure(figsize=(10, 5))
+    plt.figure(figsize=(20, 10))
     ax = plt.gca()
-    for T, c in tuple(zip(np.linspace(1, 10, games), mcolors.TABLEAU_COLORS.keys())):
+    for T, c in tuple(zip(np.linspace(1, 10, games), mcolors.CSS4_COLORS.keys())):
         p = _plot_time_serie(G, W, steps=steps, x0=x0, beta=beta, ax=ax, color=c, choice_factor=choice_factor)
         means_dict[T] = p
-    plt.title(title)
-    plt.xlabel('Time Steps')
-    plt.ylabel('Proportion of Cooperator Nodes')
+    plt.title(title + " (Avg At Game End: " + str(sum(means_dict.values()) / len(means_dict)) + ")")
+    plt.xlabel("Time Steps")
+    plt.ylabel("Proportion of Cooperator Nodes")
     if saving_path:
         plt.savefig(os.path.normpath(path[0] + "/reports/figures/time_series/" + title + '.jpeg'), dpi=500)
     return means_dict
