@@ -41,10 +41,10 @@ while True:
         break
 
 # payoff matrix
-# b = benefit given by cooperators, c = cost cooperators bear for giving out b
-# D is defector, C is cooperator. Left is 'i'or the current node, right is 'j' or neighbor node.
-# Assignment of values: [D:D, D:C], [C:D, C:C]
-# Values dictated by:   [0, b], [-c, b-c]
+# info: b = benefit given by cooperators, c = cost cooperators bear for giving out b
+# info: D is defector, C is cooperator. Left is 'i'or the current node, right is 'j' or neighbor node.
+# info: Assignment of values: [D:D, D:C], [C:D, C:C]
+# info: Values dictated by:   [0, b], [-c, b-c]
 payoff = [[0, 1.8], [-0.3, 1.5]]
 
 # running the simulation and making time series plot
