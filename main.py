@@ -42,11 +42,13 @@ while True:
                             \n"""))
     if (choice_factor == 1):
         beta = float(input("\nImportance of payoff difference (value between 0 and 1 inclusive): "))
+        # *: Updating title to show choice factor.
+        title = "{0}-c{1}-{2}b)".format(title, choice_factor, beta)
         break
     if (choice_factor == 2):
+        # *: Updating title to show choice factor.
+        title = "{0}-c{1})".format(title, choice_factor)
         break
-# *: Updating title to show choice factor.
-title = "{0}-c{1})".format(title, choice_factor)
 
 # payoff matrix
 # info: b = benefit given by cooperators, c = cost cooperators bear for giving out b
