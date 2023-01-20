@@ -8,17 +8,21 @@ from density_plots import *
 os.system('cls' if os.name == 'nt' else 'clear')
 print("[=================== Prisoner's Dilemma Game =======================]")
 while True:
-    graphChoice = input("\nWhich graph would you like to simulate? (ws for Watts-Strogatz or fb for Facebook): ")
+    graphChoice = input("\nWhich graph would you like to simulate? (ws for Watts-Strogatz or fb for Facebook): ").lower()
     if (graphChoice == "ws"):
         print("\nNote: Default values for these questions are: 1000 Nodes, 4 Edges Per Node (on average), 10 games, 25 turns, 0.5 Cooperators.")
         nodes = int(input("\nNumber of players/nodes (positive integer): "))
         avgEdgePerNode = int(input("\nNumber of average edges per node (positive integer): "))
         g = nx.watts_strogatz_graph(nodes, avgEdgePerNode, 0.1)
+        # *: Updating title to match graph type.
+        title = "Proportion of Cooperators per Time-Step ({0}-{1}n-{2}k".format(graphChoice.upper(), nodes, avgEdgePerNode)
         break
     elif (graphChoice == "fb"):
         print("\nNote: Default values for these questions are: 10 Games, 25 Turns, 0.5 Cooperators.")
         path = os.path.split(os.path.realpath(__file__))
         g = nx.read_edgelist(os.path.normpath(path[0] + "/facebook_combined.txt.gz"), create_using = nx.Graph(), nodetype = int)
+        # *: Updating title to match graph type.
+        title = "Proportion of Cooperators per Time-Step {0}".format(graphChoice.upper())
         break
     else:
         print("\nInvalid choice, type fb for Facebook network or ws for Watts-Strogatz network.")
@@ -26,6 +30,8 @@ while True:
 games = int(input("\nNumber of games to simulate (positive integer): "))
 turns = int(input("\nNumber of turns to run each game (positve integer): "))
 init_coop = float(input("\nInitial proportion of cooperators to defectors (float between 0 and 1 inclusive): "))
+# *: Updating title to show games and turns.
+title = "{0}-{1}g-{2}t".format(title, games, turns)
 
 # how players decide to change their strategy
 beta = 0
@@ -39,6 +45,8 @@ while True:
         break
     if (choice_factor == 2):
         break
+# *: Updating title to show choice factor.
+title = "{0}-c{1})".format(title, choice_factor)
 
 # payoff matrix
 # info: b = benefit given by cooperators, c = cost cooperators bear for giving out b
@@ -48,7 +56,7 @@ while True:
 payoff = [[0, 1.8], [-0.3, 1.5]]
 
 # running the simulation and making time series plot
-pDict = plot_time_series(g, payoff, turns, init_coop, beta, games, choice_factor, "Proportion of Cooperators per Time-Step")
+pDict = plot_time_series(g, payoff, turns, init_coop, beta, games, choice_factor, title)
 p = sum(pDict.values()) / len(pDict)
 
 # video of evolution
