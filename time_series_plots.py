@@ -34,7 +34,7 @@ def _plot_time_serie(G, W, steps, x0, beta, ax, color, choice_factor):
     p : float
         Mean density
     """
-    p, time_series = one_replica_simulation(G, W, steps, x0, beta, choice_factor, stationary=0.0)
+    p, time_series = one_replica_simulation(G, W, steps, x0, beta, choice_factor)
     ax.plot(time_series, c=color)
     return p
 
@@ -68,14 +68,37 @@ def plot_time_series(G, W, steps, x0, beta, games, choice_factor, title, saving_
     means_dict = dict()
     plt.figure(figsize=(20, 10))
     ax = plt.gca()
-    for T, c in tuple(zip(np.linspace(1, 10, games), mcolors.CSS4_COLORS.keys())):
+    # !: Colors sometimes are too faded or light.
+    # !: Currently skipping last game.
+    # *: for T, c in tuple(zip(np.linspace(1, 10, games), mcolors.CSS4_COLORS.keys())):
+    for T, c in tuple(zip(range(1, games+1), mcolors.XKCD_COLORS.keys())):
         p = _plot_time_serie(G, W, steps=steps, x0=x0, beta=beta, ax=ax, color=c, choice_factor=choice_factor)
+        # TODO: Fixing the mean_dict. It doesnt seam to work properly?
         means_dict[T] = p
-    plt.title(title + " (Avg At Game End: " + str(sum(means_dict.values()) / len(means_dict)) + ")")
+        print("game " + str(T))
+    # TODO: Fixing the mean_line. It prints but not in the right spots
+    mean_line = plt.plot(list(means_dict.keys()), list(means_dict.values()), c='blue')     
+    plt.setp(mean_line, linestyle="--")
+    plt.setp(mean_line, linewidth=4)
+    # labels
+    plt.title("Proportion of Cooperators per Time-Step {0} (Avg At Game End: {1})".format(title, str(sum(means_dict.values()) / len(means_dict))))
     plt.xlabel("Time Steps")
     plt.ylabel("Proportion of Cooperator Nodes")
+    # saving file to reports folder
     if saving_path:
-        plt.savefig(os.path.normpath(path[0] + "/reports/figures/time_series/" + title + '.jpeg'), dpi=500)
+        plt.savefig(os.path.normpath(path[0] + "/reports/figures/time_series/" + title + " " + ".jpeg"), dpi=500)
+
+    # ?: Created a Mean line of all games but in a seperate graph. 
+    # ?: Not sure if it should be a part of the first one or seperate.
+    # plt.figure(figsize=(5, 5))
+    # plt.plot(list(means_dict.keys()), list(means_dict.values()), c='blue')
+    # plt.scatter(list(means_dict.keys()), list(means_dict.values()), c='blue')
+    # plt.title(title)
+    # plt.xlabel('Time Steps')
+    # plt.ylabel('Mean proportion of Cooperative Nodes')
+    # if saving_path:
+    #     plt.savefig(os.path.normpath(path[0] + "/reports/figures/time_series/" + title + " - Mean" + ".jpeg"), dpi=500)
+    # ?: end
     return means_dict
 
 def make_simulation_video(G, W, steps, x0, beta, choice_factor, name, fps):
