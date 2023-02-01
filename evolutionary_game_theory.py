@@ -4,6 +4,7 @@ a Fermi rule approximation strategy on a given network.
 """
 
 import numpy as np
+import random
 import logging
 from collections import deque
 
@@ -39,10 +40,18 @@ def _fermi_updating_rule(wi, wj, beta):
     pij : float
         Probability of individual i adopting individual j strategy
     """
+    # info: This is the output of each matchup with option 2
+    # info: beta is assume to be 0.0002588235294
+    # info: -- 22 average edges per node / 85000 nodes = 0.0002588235294...
+    # *: i: cooperator, j: cooperator   | 0.5 or 50%
+    # *: i: cooperator, j: defector     | 0.5001358823 or 50.01358823%
+    # *: i: defector, j: cooperator     | 0.4998815882 or 49.98815882%
+    # *: i: defector, j: defector       | 0.5 or 50%
+	# bug: CANNOT HANDLE LARGE NUMBERS BUT DECIMAL SLOWS DOWN PROGRAM A LOT
     return 1 / (1 + np.e ** (-beta * (wj - wi)))
 
 
-def one_replica_simulation(G, W, steps, x0, beta, choice_factor, stationary=0.9):
+def one_replica_simulation(G, W, steps, x0, beta, choice_factor):
     """
     Runs one replica simulation of the evolutionary game theory simulation
     Parameters
@@ -58,21 +67,25 @@ def one_replica_simulation(G, W, steps, x0, beta, choice_factor, stationary=0.9)
         Parameter that models the importance of the difference in Fermi updating rule
     choice_factor : int
         Choice of how nodes will decide to update their strategy
-    stationary : float
-        Proportion of epochs that correspond to the stationary phase
     Returns
     -------
     p : float
-        mean proportion of nodes using cooperative strategy in the stationary phase
+        mean proportion of nodes using cooperative strategy
     time_series : deque
         time series of the proportion of nodes using cooperative strategy in each time step
     """
+    # Gets an exact proportion of initial nodes using cooperative strategy
     time_series = deque()
-    strategy = dict(zip(G.nodes(), np.random.choice([0, 1], len(G.nodes()), p=[x0, 1-x0])))
+    strategy = dict(zip(G.nodes(), G.nodes()))
+    strategy = strategy.fromkeys(strategy, 1)
+    coop_nodes = random.sample(list(G.nodes()), int(G.number_of_nodes()*x0))
+    coop_dict = dict(zip(coop_nodes, coop_nodes))
+    coop_dict = coop_dict.fromkeys(coop_dict, 0)
+    strategy.update(coop_dict)
 
     for t in range(steps):
-        if t > steps * stationary:
-            time_series.append(_count_coop(strategy))
+        print("--Step " + str(t))
+        time_series.append(_count_coop(strategy))
         new_strategy = dict()
         payoffs = _compute_all_payoffs(G, W, strategy)
         for i in G.nodes():
@@ -80,11 +93,14 @@ def one_replica_simulation(G, W, steps, x0, beta, choice_factor, stationary=0.9)
             for j in j_List:
                 if (choice_factor == 1):
                     # For updating probability based on payoff difference and beta:
-                    wi, wj = payoffs.get(i), payoffs.get(j)  # payoffs of each node
+                    strat_i = strategy.get(i)
+                    strat_j = strategy.get(j)
+                    wi, wj = W[strat_i][strat_j], W[strat_j][strat_i]  # payoffs of each node
                 elif (choice_factor == 2):
                     # For updating probability based on popularity and beta:
-                    # ?: backup wi, wj = G.degree(i), G.degree(j)  # edge degrees of each node
-                    wi, wj = payoffs.get(i), payoffs.get(j)  # payoffs of each node
+                    strat_i = strategy.get(i)
+                    strat_j = strategy.get(j)
+                    wi, wj = W[strat_i][strat_j], W[strat_j][strat_i]  # payoffs of each node
                     beta = len(list(G.neighbors(j)))/len(list(G.nodes))
                 pij = _fermi_updating_rule(wi, wj, beta)  # probability of node i to adopt j strategy
                 if np.random.random() < pij:
