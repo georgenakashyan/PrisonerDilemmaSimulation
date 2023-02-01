@@ -59,6 +59,8 @@ payoff = [[1.5, -0.3], [1.8, 0]]
 #payoff = [[9, -0.3], [1.8, 0]]
 #payoff = [[2, -0.3], [1.8, 0]]
 #payoff = [[2.2, -0.3], [1.8, 0]]
+#payoff = [[5, -1], [6, 0]]
+#payoff = [[5.7, -0.3], [6, 0]]
 
 # running the simulation and making time series plot
 pDict = plot_time_series(g, payoff, turns, init_coop, beta, games, choice_factor, title)
