@@ -75,6 +75,7 @@ def one_replica_simulation(G, W, steps, x0, beta, choice_factor):
         time series of the proportion of nodes using cooperative strategy in each time step
     """
     # Gets an exact proportion of initial nodes using cooperative strategy
+	# Cooperator : 0, Defector : 1
     time_series = deque()
     strategy = dict(zip(G.nodes(), G.nodes()))
     strategy = strategy.fromkeys(strategy, 1)
@@ -89,18 +90,13 @@ def one_replica_simulation(G, W, steps, x0, beta, choice_factor):
         new_strategy = dict()
         payoffs = _compute_all_payoffs(G, W, strategy)
         for i in G.nodes():
+            strat_i = strategy.get(i)
             j_List = list(G.neighbors(i))
             for j in j_List:
-                if (choice_factor == 1):
+                strat_j = strategy.get(j)
+                wi, wj = W[strat_i][strat_j], W[strat_j][strat_i]  # payoffs of each node
+                if (choice_factor == 2):
                     # For updating probability based on payoff difference and beta:
-                    strat_i = strategy.get(i)
-                    strat_j = strategy.get(j)
-                    wi, wj = W[strat_i][strat_j], W[strat_j][strat_i]  # payoffs of each node
-                elif (choice_factor == 2):
-                    # For updating probability based on popularity and beta:
-                    strat_i = strategy.get(i)
-                    strat_j = strategy.get(j)
-                    wi, wj = W[strat_i][strat_j], W[strat_j][strat_i]  # payoffs of each node
                     beta = len(list(G.neighbors(j)))/len(list(G.nodes))
                 pij = _fermi_updating_rule(wi, wj, beta)  # probability of node i to adopt j strategy
                 if np.random.random() < pij:
