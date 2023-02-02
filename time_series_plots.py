@@ -36,6 +36,7 @@ def _plot_time_serie(G, W, steps, x0, beta, ax, color, choice_factor):
 	"""
 	p, time_series = one_replica_simulation(G, W, steps, x0, beta, choice_factor)
 	ax.plot(time_series, c=color)
+	#!: PUT VALUES IN SOMETHING TO GIVE TO MEANLINE OUTSIDE THIS
 	return p
 
 
@@ -68,7 +69,6 @@ def plot_time_series(G, W, steps, x0, beta, games, choice_factor, title, saving_
 	means_dict = dict()
 	plt.figure(figsize=(20, 10))
 	ax = plt.gca()
-	# !: Colors sometimes are too faded or light.
 	# !: Currently skipping last game.
 	# *: for T, c in tuple(zip(np.linspace(1, 10, games), mcolors.CSS4_COLORS.keys())):
 	for T, c in tuple(zip(range(1, games+1), mcolors.XKCD_COLORS.keys())):
