@@ -8,7 +8,7 @@ from density_plots import *
 os.system('cls' if os.name == 'nt' else 'clear')
 print("[=================== Prisoner's Dilemma Game =======================]")
 while True:
-	graphChoice = input("\nWhich graph would you like to simulate? (ws for Watts-Strogatz or fb for Facebook): ").lower()
+	graphChoice = input("\nWhich graph would you like to simulate? (ws for Watts-Strogatz, fb for Facebook, or 2d for two dimensional grid): ").lower()
 	if (graphChoice == "ws"):
 		print("\nNote: Default values for these questions are: 1000 Nodes, 4 Edges Per Node (on average), 10 games, 25 turns, 0.5 Cooperators.")
 		nodes = int(input("\nNumber of players/nodes (positive integer): "))
@@ -22,6 +22,12 @@ while True:
 		path = os.path.split(os.path.realpath(__file__))
 		g = nx.read_edgelist(os.path.normpath(path[0] + "/facebook_combined.txt.gz"), create_using = nx.Graph(), nodetype = int)
 		# *: Updating title to match graph type.
+		title = "{0}".format(graphChoice.upper())
+		break
+	elif (graphChoice == "2d"):
+		print("\nNote: Default values for these questions are: 100 Nodes, 10 games, 25 turns, 0.5 Cooperators.")
+		nodes = int(input("\nNumber of players/nodes (positive integer): "))
+		g = nx.grid_2d_graph(nodes, nodes)
 		title = "{0}".format(graphChoice.upper())
 		break
 	else:
