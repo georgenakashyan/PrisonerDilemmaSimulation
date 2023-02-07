@@ -7,6 +7,7 @@ import numpy as np
 import random
 import logging
 from collections import deque
+from time_series_plots import *
 
 def _count_coop(strategies):
 	"""
@@ -121,54 +122,6 @@ def one_replica_simulation(G, W, steps, x0, beta, choice_factor):
 	p = np.mean(time_series)
 	return p, time_series
 
-# def make_film_frame(G, W, steps, x0, beta, choice_factor, name, fps):
-	"""
-	Creates each a new image that will be used as a frame in the creation of a video for a graph.
-	----------
-	G : nx.Graph
-	W : array
-		Payoff matrix
-	steps : int
-		Number of steps
-	x0 : float
-		Initial density of cooperators
-	beta : float
-		Models the importance of the difference of payoffs in a game
-	choice_factor : int
-		Choice of how nodes will decide to update their strategy
-	name : str
-		Name of the video
-	fps : int
-	"""
-	plt.figure(figsize=(10, 10))
-	ax = plt.gca()
-	my_pos = nx.spring_layout(G, seed = 100)
-	nx.draw(G, my_pos, node_size=10, width=0.3, ax=ax, node_color=['red' if s == 0 else 'royalblue' for s in strategy.values()])
-	plt.title("Time Step : %02d" %(t+1))
-	red_patch = mpatches.Patch(color='red', label='Cooperative Player')
-	blue_patch = mpatches.Patch(color='royalblue', label='Non-Cooperative Player')
-
-	plt.legend(handles=[red_patch, blue_patch], loc='lower right')
-	savePath = os.path.normpath(path[0] + "/reports/figures/film/%s%02d.png" %(name, t+1))
-	print(savePath)
-	plt.savefig(savePath, dpi = 500)
-	plt.close()
-
-# def make_video(name, fps):
-	"""
-	Creates a video using the frames created at each timestep.
-	----------
-	name : str
-		Name of the video
-	fps : int
-	"""
-	path = os.path.split(os.path.realpath(__file__))
-	image_folder = os.path.normpath(path[0] + "/reports/figures/film")
-	print(image_folder)
-	image_files = [image_folder+'/'+img for img in os.listdir(image_folder) if img.endswith(".png")]
-	clip = moviepy.video.io.ImageSequenceClip.ImageSequenceClip(sorted(image_files), fps=fps)
-	clip.write_videofile(os.path.normpath(path[0] + "/reports/videos/" + name + ".mp4"))
-
 def multi_replica_simulation(G, W, steps, x0, beta, replicas, choice_factor):
 	"""
 	Runs one a given number of  simulation replicas of the evolutionary game theory simulation
@@ -193,44 +146,3 @@ def multi_replica_simulation(G, W, steps, x0, beta, replicas, choice_factor):
 		Mean proportion of nodes following a cooperative strategy
 	"""
 	return np.mean([one_replica_simulation(G, W, steps, x0, beta, choice_factor)[0] for _ in range(replicas)])
-
-
-def _compute_all_payoffs(G, W, strategy):
-	"""
-	Computes the payoffs of each node in the network in a timestep
-	Parameters
-	----------
-	G : nx.Graph
-	W : array
-		Matrix payoff
-	strategy : dict
-		Dict of strategies followed by each node
-	Returns
-	-------
-	payoffs : dict
-		Payoffs of the nodes in the network
-	"""
-	payoffs = {node: _get_payoff(G, node, W, strategy) for node in G.nodes}
-	return payoffs
-
-
-def _get_payoff(G, i, W, strategy):
-	"""
-	Gets the payoff of one sample. To obtain the payoff of each node a game between each node and its neighbors is
-	simulated knowing each neighbor strategy. One obtained every result of each game is added.
-	Parameters
-	----------
-	G : nx.Graph
-	i : int, tuple, str
-		The node of interest to obtain its payoff
-	W : array
-		Matrix payoff
-	strategy : dict
-		Dict of strategies followed by each node
-	Returns
-	-------
-	payoff : float
-		Payoff of the given node
-	"""
-	payoff = sum([W[strategy.get(i)][strategy.get(j)] for j in G.neighbors(i)])
-	return payoff
