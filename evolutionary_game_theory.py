@@ -121,6 +121,53 @@ def one_replica_simulation(G, W, steps, x0, beta, choice_factor):
 	p = np.mean(time_series)
 	return p, time_series
 
+# def make_film_frame(G, W, steps, x0, beta, choice_factor, name, fps):
+	"""
+	Creates each a new image that will be used as a frame in the creation of a video for a graph.
+	----------
+	G : nx.Graph
+	W : array
+		Payoff matrix
+	steps : int
+		Number of steps
+	x0 : float
+		Initial density of cooperators
+	beta : float
+		Models the importance of the difference of payoffs in a game
+	choice_factor : int
+		Choice of how nodes will decide to update their strategy
+	name : str
+		Name of the video
+	fps : int
+	"""
+	plt.figure(figsize=(10, 10))
+	ax = plt.gca()
+	my_pos = nx.spring_layout(G, seed = 100)
+	nx.draw(G, my_pos, node_size=10, width=0.3, ax=ax, node_color=['red' if s == 0 else 'royalblue' for s in strategy.values()])
+	plt.title("Time Step : %02d" %(t+1))
+	red_patch = mpatches.Patch(color='red', label='Cooperative Player')
+	blue_patch = mpatches.Patch(color='royalblue', label='Non-Cooperative Player')
+
+	plt.legend(handles=[red_patch, blue_patch], loc='lower right')
+	savePath = os.path.normpath(path[0] + "/reports/figures/film/%s%02d.png" %(name, t+1))
+	print(savePath)
+	plt.savefig(savePath, dpi = 500)
+	plt.close()
+
+# def make_video(name, fps):
+	"""
+	Creates a video using the frames created at each timestep.
+	----------
+	name : str
+		Name of the video
+	fps : int
+	"""
+	path = os.path.split(os.path.realpath(__file__))
+	image_folder = os.path.normpath(path[0] + "/reports/figures/film")
+	print(image_folder)
+	image_files = [image_folder+'/'+img for img in os.listdir(image_folder) if img.endswith(".png")]
+	clip = moviepy.video.io.ImageSequenceClip.ImageSequenceClip(sorted(image_files), fps=fps)
+	clip.write_videofile(os.path.normpath(path[0] + "/reports/videos/" + name + ".mp4"))
 
 def multi_replica_simulation(G, W, steps, x0, beta, replicas, choice_factor):
 	"""
