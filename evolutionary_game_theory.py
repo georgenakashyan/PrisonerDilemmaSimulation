@@ -7,7 +7,6 @@ import numpy as np
 import random
 import logging
 from collections import deque
-from time_series_plots import *
 
 def _count_coop(strategies):
 	"""
