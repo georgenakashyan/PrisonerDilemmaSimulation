@@ -5,7 +5,6 @@ a Fermi rule approximation strategy on a given network.
 
 import numpy as np
 import random
-import logging
 from collections import deque
 
 def _count_coop(strategies):
@@ -145,3 +144,43 @@ def multi_replica_simulation(G, W, steps, x0, beta, replicas, choice_factor):
 		Mean proportion of nodes following a cooperative strategy
 	"""
 	return np.mean([one_replica_simulation(G, W, steps, x0, beta, choice_factor)[0] for _ in range(replicas)])
+
+def _compute_all_payoffs(G, W, strategy):
+	"""
+	Computes the payoffs of each node in the network in a timestep
+	Parameters
+	----------
+	G : nx.Graph
+	W : array
+		Matrix payoff
+	strategy : dict
+		Dict of strategies followed by each node
+	Returns
+	-------
+	payoffs : dict
+		Payoffs of the nodes in the network
+	"""
+	payoffs = {node: _get_payoff(G, node, W, strategy) for node in G.nodes}
+	return payoffs
+
+
+def _get_payoff(G, i, W, strategy):
+	"""
+	Gets the payoff of one sample. To obtain the payoff of each node a game between each node and its neighbors is
+	simulated knowing each neighbor strategy. One obtained every result of each game is added.
+	Parameters
+	----------
+	G : nx.Graph
+	i : int, tuple, str
+		The node of interest to obtain its payoff
+	W : array
+		Matrix payoff
+	strategy : dict
+		Dict of strategies followed by each node
+	Returns
+	-------
+	payoff : float
+		Payoff of the given node
+	"""
+	payoff = sum([W[strategy.get(i)][strategy.get(j)] for j in G.neighbors(i)])
+	return payoff
