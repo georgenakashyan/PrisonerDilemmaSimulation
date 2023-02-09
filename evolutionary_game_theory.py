@@ -2,9 +2,13 @@
 This module contains functions to run a simulation of an evolutionary game theory process following
 a Fermi rule approximation strategy on a given network.
 """
-
+import os
 import numpy as np
+import matplotlib.patches as mpatches
 import random
+import matplotlib.pyplot as plt
+import networkx as nx
+from decimal import *
 from collections import deque
 
 def _count_coop(strategies):
@@ -47,10 +51,10 @@ def _fermi_updating_rule(wi, wj, beta):
 	# *: i: defector, j: cooperator		| 0.4998815882 or 49.98815882%
 	# *: i: defector, j: defector		| 0.5 or 50%
 	# bug: CANNOT HANDLE LARGE NUMBERS BUT DECIMAL SLOWS DOWN PROGRAM A LOT
-	return 1 / (1 + np.e ** (-beta * (wj - wi)))
+	return 1 / (1 + Decimal(np.e) ** Decimal((-beta * (wj - wi))))
 
 
-def one_replica_simulation(G, W, steps, x0, beta, choice_factor):
+def one_replica_simulation(G, W, steps, x0, beta, choice_factor, title):
 	"""
 	Runs one replica simulation of the evolutionary game theory simulation
 	Parameters
@@ -66,6 +70,8 @@ def one_replica_simulation(G, W, steps, x0, beta, choice_factor):
 		Parameter that models the importance of the difference in Fermi updating rule
 	choice_factor : int
 		Choice of how nodes will decide to update their strategy
+	title : string
+		title for video frame filenames
 	Returns
 	-------
 	p : float
@@ -85,6 +91,7 @@ def one_replica_simulation(G, W, steps, x0, beta, choice_factor):
 
 	if (choice_factor == 1):
 		for t in range(steps):
+			payoffs = _compute_all_payoffs(G, W, strategy)
 			print("--Step " + str(t))
 			time_series.append(_count_coop(strategy))
 			new_strategy = dict()
@@ -93,14 +100,17 @@ def one_replica_simulation(G, W, steps, x0, beta, choice_factor):
 				j_List = list(G.neighbors(i))
 				for j in j_List:
 					strat_j = strategy.get(j)
-					wi, wj = W[strat_i][strat_j], W[strat_j][strat_i]  # payoffs of each node
+					# !: testing wi, wj = W[strat_i][strat_j], W[strat_j][strat_i]  # payoffs of each node
+					wi, wj = payoffs.get(i), payoffs.get(j)
 					pij = _fermi_updating_rule(wi, wj, beta)  # probability of node i to adopt j strategy
 					if np.random.random() < pij:
 						new_strategy[i] = strategy.get(j)
 			strategy.update(new_strategy)  # update strategies
+			#make_simulation_photos(G, strategy, t, title)
 
 	elif (choice_factor == 2):
 		for t in range(steps):
+			payoffs = _compute_all_payoffs(G, W, strategy)
 			print("--Step " + str(t))
 			time_series.append(_count_coop(strategy))
 			new_strategy = dict()
@@ -110,15 +120,48 @@ def one_replica_simulation(G, W, steps, x0, beta, choice_factor):
 				j_List = list(G.neighbors(i))
 				for j in j_List:
 					strat_j = strategy.get(j)
-					wi, wj = W[strat_i][strat_j], W[strat_j][strat_i]  # payoffs of each node
+					# !: testing wi, wj = W[strat_i][strat_j], W[strat_j][strat_i]  # payoffs of each node
+					wi, wj = payoffs.get(i), payoffs.get(j)
 					# For updating probability based on payoff difference and beta:
 					beta = len(list(G.neighbors(j)))/len(list(G.nodes))
 					pij = _fermi_updating_rule(wi, wj, beta)  # probability of node i to adopt j strategy
 					probj[pij] = j
 				new_strategy[i] = strategy.get(probj[max(probj)])
 			strategy.update(new_strategy)  # update strategies
+			#make_simulation_photos(G, strategy, t, title)
 	p = np.mean(time_series)
 	return p, time_series
+
+def make_simulation_photos(G, strategy, step, title):
+	"""
+	Makes photos that will be combined to make a video
+	Parameters
+	----------
+	G : nx.Graph
+	step : int
+		Current timestep
+	strategy : dict
+		Strategies of all nodes (0 for cooperator, 1 for defector)
+	step : int
+		Current time step
+	title : str
+		Name of the photos
+	"""
+	### make plot
+	path = os.path.split(os.path.realpath(__file__))
+	title = title + ", Step=" + str(step)
+	plt.figure(figsize=(10, 10))
+	ax = plt.gca()
+	my_pos = nx.spring_layout(G, seed = 100)
+	nx.draw(G, my_pos, node_size=10, width=0.3, ax=ax, node_color=['red' if s == 0 else 'royalblue' for s in strategy.values()])
+	plt.title("Time Step : %02d" %(step+1))
+	red_patch = mpatches.Patch(color='red', label='Cooperative Player')
+	blue_patch = mpatches.Patch(color='royalblue', label='Non-Cooperative Player')
+
+	plt.legend(handles=[red_patch, blue_patch], loc='lower right')
+	savePath = os.path.normpath(path[0] + "/reports/figures/film/%s%02d.png" %(title, step+1))
+	plt.savefig(savePath, dpi = 500)
+	plt.close()
 
 def multi_replica_simulation(G, W, steps, x0, beta, replicas, choice_factor):
 	"""
