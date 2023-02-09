@@ -25,7 +25,7 @@ while True:
 		title = "{0}".format(graphChoice.upper())
 		break
 	elif (graphChoice == "2d"):
-		print("\nNote: Default values for these questions are: 100 Nodes, 10 games, 25 turns, 0.5 Cooperators.")
+		print("\nNote: Default values for these questions are: 2 Nodes, 10 games, 25 turns, 0.5 Cooperators.")
 		nodes = int(input("\nNumber of players/nodes (positive integer): "))
 		g = nx.grid_2d_graph(nodes, nodes)
 		title = "{0}".format(graphChoice.upper())
