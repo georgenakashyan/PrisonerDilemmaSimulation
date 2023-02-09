@@ -123,7 +123,7 @@ def one_replica_simulation(G, W, steps, x0, beta, choice_factor, title):
 					# !: testing wi, wj = W[strat_i][strat_j], W[strat_j][strat_i]  # payoffs of each node
 					wi, wj = payoffs.get(i), payoffs.get(j)
 					# For updating probability based on payoff difference and beta:
-					beta = len(list(G.neighbors(j)))/len(list(G.nodes))
+					beta = G.degree(j)/(len(G.nodes)-1)
 					pij = _fermi_updating_rule(wi, wj, beta)  # probability of node i to adopt j strategy
 					probj[pij] = j
 				new_strategy[i] = strategy.get(probj[max(probj)])
