@@ -63,12 +63,7 @@ while True:
 # info: D is defector, C is cooperator. Left is 'i'or the current node, right is 'j' or neighbor node.
 # info: Assignment of values: [C:C,C:D], [D:C, D:D]
 # info: Values dictated by:   [b-c, -c], [b, 0]
-payoff = [[1.5, -0.3], [1.8, 0]]	# *: Original Payoff
-#payoff = [[9, -0.3], [1.8, 0]]		# !: 2 Not a correct Payoff, testing MUCH higher benefit 
-#payoff = [[2, -0.3], [1.8, 0]]		# !: 3 Not a correct Payoff, testing mid benefit
-#payoff = [[2.2, -0.3], [1.8, 0]]	# !: 4 Not a correct Payoff, testing slightly higher benefit
-#payoff = [[5, -1], [6, 0]]			# *: 5 Tests high cost.
-#payoff = [[5.7, -0.3], [6, 0]]		# ?: 6 ---
+payoff = [[1.5, -0.3], [1.8, 0]]
 
 # running the simulation and making time series plot
 pDict = plot_time_series(g, payoff, turns, init_coop, beta, games, choice_factor, title)
