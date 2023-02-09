@@ -96,11 +96,8 @@ def one_replica_simulation(G, W, steps, x0, beta, choice_factor, title):
 			time_series.append(_count_coop(strategy))
 			new_strategy = dict()
 			for i in G.nodes():
-				strat_i = strategy.get(i)
 				j_List = list(G.neighbors(i))
 				for j in j_List:
-					strat_j = strategy.get(j)
-					# !: testing wi, wj = W[strat_i][strat_j], W[strat_j][strat_i]  # payoffs of each node
 					wi, wj = payoffs.get(i), payoffs.get(j)
 					pij = _fermi_updating_rule(wi, wj, beta)  # probability of node i to adopt j strategy
 					if np.random.random() < pij:
@@ -116,11 +113,8 @@ def one_replica_simulation(G, W, steps, x0, beta, choice_factor, title):
 			new_strategy = dict()
 			for i in G.nodes():
 				probj = {}
-				strat_i = strategy.get(i)
 				j_List = list(G.neighbors(i))
 				for j in j_List:
-					strat_j = strategy.get(j)
-					# !: testing wi, wj = W[strat_i][strat_j], W[strat_j][strat_i]  # payoffs of each node
 					wi, wj = payoffs.get(i), payoffs.get(j)
 					# For updating probability based on payoff difference and beta:
 					beta = G.degree(j)/(len(G.nodes)-1)
