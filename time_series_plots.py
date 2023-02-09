@@ -73,13 +73,13 @@ def plot_time_series(G, W, steps, x0, beta, games, choice_factor, title, saving_
 	for T, c in tuple(zip(range(1, games+1), mcolors.XKCD_COLORS.keys())):
 		gameTitle = title + ", Game=" + str(T)
 		p = _plot_time_serie(G, W, steps=steps, x0=x0, beta=beta, ax=ax, color=c, choice_factor=choice_factor, title=gameTitle)
-		# TODO: Fixing the mean_dict. It doesnt seam to work properly?
+		# TODO: Fixing the mean_dict. Right now It's used in the title of timeseriesplot as a RUNNING total.
 		means_dict[T] = p
 		print("game " + str(T))
 	# TODO: Fixing the mean_line. It prints but not in the right spots
-	mean_line = plt.plot(list(means_dict.keys()), list(means_dict.values()), c='blue')	 
-	plt.setp(mean_line, linestyle="--")
-	plt.setp(mean_line, linewidth=4)
+	# *: mean_line = plt.plot(list(means_dict.keys()), list(means_dict.values()), c='blue')	 
+	# *: plt.setp(mean_line, linestyle="--")
+	# *: plt.setp(mean_line, linewidth=4)
 	# labels
 	plt.title("Proportion of Cooperators per Time-Step {0} (Avg At Game End: {1})".format(title, str(sum(means_dict.values()) / len(means_dict))))
 	plt.xlabel("Time Steps")
