@@ -31,7 +31,7 @@ while True:
 		title = "{0}".format(graphChoice.upper())
 		break
 	else:
-		print("\nInvalid choice, type fb for Facebook network or ws for Watts-Strogatz network.")
+		print("\nInvalid choice")
 
 games = int(input("\nNumber of games to simulate (positive integer): "))
 turns = int(input("\nNumber of turns to run each game (positve integer): "))
@@ -51,10 +51,12 @@ while True:
 		# *: Updating title to show choice factor.
 		title = "{0}, Strategy {1}, Beta={2}".format(title, choice_factor, beta)
 		break
-	if (choice_factor == 2):
+	elif (choice_factor == 2):
 		# *: Updating title to show choice factor.
 		title = "{0}, Strategy {1}".format(title, choice_factor)
 		break
+	else:
+		print("\nInvalid choice")
 
 # payoff matrix
 # info: b = benefit given by cooperators, c = cost cooperators bear for giving out b
@@ -73,4 +75,4 @@ pDict = plot_time_series(g, payoff, turns, init_coop, beta, games, choice_factor
 p = sum(pDict.values()) / len(pDict)
 
 # video of evolution
-make_simulation_video(g, payoff, turns, init_coop, beta, choice_factor, "Prisoner's Dilemma", 5)
+# make_simulation_video(g, payoff, turns, init_coop, beta, choice_factor, "Prisoner's Dilemma", 5)
