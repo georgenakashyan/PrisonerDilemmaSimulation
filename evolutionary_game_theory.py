@@ -106,7 +106,6 @@ def one_replica_simulation(G, W, steps, x0, beta, choice_factor, title):
 			#make_simulation_photos(G, strategy, t, title)
 
 	elif (choice_factor == 2):
-		avg_k = G.number_of_edges()/G.number_of_nodes()
 		for t in range(steps):
 			payoffs = _compute_all_payoffs(G, W, strategy)
 			print("--Step " + str(t))
@@ -118,9 +117,7 @@ def one_replica_simulation(G, W, steps, x0, beta, choice_factor, title):
 				for j in j_List:
 					wi, wj = payoffs.get(i), payoffs.get(j)
 					# For updating probability based on payoff difference and beta:
-					# ! TESTING BETA 1: beta = G.degree(j)/(len(G.nodes)-1)
-					# Beta 2:
-					beta = G.degree(j)/avg_k
+					beta = G.degree(j)/(len(G.nodes)-1)
 					pij = _fermi_updating_rule(wi, wj, beta)  # probability of node i to adopt j strategy
 					probj[pij] = j
 				new_strategy[i] = strategy.get(probj[max(probj)])
