@@ -35,8 +35,7 @@ def _plot_time_serie(G, W, steps, x0, beta, ax, color, choice_factor, title):
 	"""
 	p, time_series = one_replica_simulation(G, W, steps, x0, beta, choice_factor, title)
 	ax.plot(time_series, c=color)
-	#!: PUT VALUES IN SOMETHING TO GIVE TO MEANLINE OUTSIDE THIS
-	return p
+	return time_series
 
 
 def plot_time_series(G, W, steps, x0, beta, games, choice_factor, title, saving_path=True):
@@ -65,23 +64,23 @@ def plot_time_series(G, W, steps, x0, beta, games, choice_factor, title, saving_
 	means_dict : dict
 		Mean proportion of cooperators at every stage
 	"""
-	means_dict = dict()
+	means_arr = [0] * steps
 	plt.figure(figsize=(20, 10))
 	ax = plt.gca()
-	# !: Currently skipping last game.
-	# *: for T, c in tuple(zip(np.linspace(1, 10, games), mcolors.CSS4_COLORS.keys())):
 	for T, c in tuple(zip(range(1, games+1), mcolors.XKCD_COLORS.keys())):
-		gameTitle = title + ", Game=" + str(T)
-		p = _plot_time_serie(G, W, steps=steps, x0=x0, beta=beta, ax=ax, color=c, choice_factor=choice_factor, title=gameTitle)
-		# TODO: Fixing the mean_dict. Right now It's used in the title of timeseriesplot as a RUNNING total.
-		means_dict[T] = p
-		print("game " + str(T))
-	# TODO: Fixing the mean_line. It prints but not in the right spots
-	# *: mean_line = plt.plot(list(means_dict.keys()), list(means_dict.values()), c='blue')	 
-	# *: plt.setp(mean_line, linestyle="--")
-	# *: plt.setp(mean_line, linewidth=4)
+		print("Game " + str(T))
+		videoTitle = title + ", Game=" + str(T)
+		time_series = _plot_time_serie(G, W, steps=steps, x0=x0, beta=beta, ax=ax, color=c, choice_factor=choice_factor, title=videoTitle)
+		for i in range(0, steps):
+			means_arr[i] = means_arr[i] + time_series[i]
+	for i in range(0, steps):
+		means_arr[i] = means_arr[i]/games
+	mean_line = plt.plot(range(0, steps), means_arr, c='red')	 
+	plt.setp(mean_line, linestyle="--")
+	plt.setp(mean_line, linewidth=3)
 	# labels
-	plt.title("Proportion of Cooperators per Time-Step {0} (Avg At Game End: {1})".format(title, str(sum(means_dict.values()) / len(means_dict))))
+	# BUG: THIS OUTPUTS A RUNNING TOTAL OF THE VALUES IN means_arr, NOT THE MEAN OF THE LAST STEP.
+	plt.title("Proportion of Cooperators per Time-Step {0} (Avg At Game End: {1})".format(title, str(np.mean(means_arr))))
 	plt.xlabel("Time Steps")
 	plt.ylabel("Proportion of Cooperator Nodes")
 	# saving file to reports folder
@@ -99,7 +98,7 @@ def plot_time_series(G, W, steps, x0, beta, games, choice_factor, title, saving_
 	# if saving_path:
 	#	 plt.savefig(os.path.normpath(path[0] + "/reports/figures/time_series/" + title + " - Mean" + ".jpeg"), dpi=500)
 	# ?: end
-	return means_dict
+	return means_arr
 
 def make_simulation_video(name, fps):
 	"""
