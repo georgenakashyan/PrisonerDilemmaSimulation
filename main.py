@@ -66,8 +66,8 @@ while True:
 payoff = [[1.5, -0.3], [1.8, 0]]
 
 # running the simulation and making time series plot
-pDict = plot_time_series(g, payoff, turns, init_coop, beta, games, choice_factor, title)
-p = sum(pDict.values()) / len(pDict)
+p_arr = plot_time_series(g, payoff, turns, init_coop, beta, games, choice_factor, title)
+p = np.mean(p_arr)
 
 # video of evolution
 # make_simulation_video(g, payoff, turns, init_coop, beta, choice_factor, "Prisoner's Dilemma", 5)
