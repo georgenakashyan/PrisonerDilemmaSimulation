@@ -103,7 +103,8 @@ def one_replica_simulation(G, W, steps, x0, beta, choice_factor, title):
 					if np.random.random() < pij:
 						new_strategy[i] = strategy.get(j)
 			strategy.update(new_strategy)  # update strategies
-			#make_simulation_photos(G, strategy, t, title)
+			# TODO: Make this an option in the beginning that can be toggled on or off.
+			# *: make_simulation_photos(G, strategy, t, title)
 
 	elif (choice_factor == 2):
 		for t in range(steps):
@@ -122,7 +123,8 @@ def one_replica_simulation(G, W, steps, x0, beta, choice_factor, title):
 					probj[pij] = j
 				new_strategy[i] = strategy.get(probj[max(probj)])
 			strategy.update(new_strategy)  # update strategies
-			#make_simulation_photos(G, strategy, t, title)
+			# TODO: Make this an option in the beginning that can be toggled on or off.
+			# *: make_simulation_photos(G, strategy, t, title)
 	p = np.mean(time_series)
 	return p, time_series
 
