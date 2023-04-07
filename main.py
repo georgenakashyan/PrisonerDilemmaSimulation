@@ -64,6 +64,8 @@ while True:
 # info: Assignment of values: [C:C,C:D], [D:C, D:D]
 # info: Values dictated by:   [b-c, -c], [b, 0]
 payoff = [[1.5, -0.3], [1.8, 0]]
+# info: Payoff for Facebook Dataset to be cooperator dominant. (k is 22 in FB)
+# payoff = [[29, -1], [30, 0]]
 
 # running the simulation and making time series plot
 p_arr = plot_time_series(g, payoff, turns, init_coop, beta, games, choice_factor, title)
