@@ -104,7 +104,7 @@ def one_replica_simulation(G, W, steps, x0, beta, choice_factor, title):
 						new_strategy[i] = strategy.get(j)
 			strategy.update(new_strategy)  # update strategies
 			# TODO: Make this an option in the beginning that can be toggled on or off.
-			# *: make_simulation_photos(G, strategy, t, title)
+			make_simulation_photos(G, strategy, t, title)
 
 	elif (choice_factor == 2):
 		for t in range(steps):
