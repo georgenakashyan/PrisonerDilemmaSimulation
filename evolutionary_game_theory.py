@@ -151,8 +151,6 @@ def make_simulation_photos(G, strategy, step, title):
 	Parameters
 	----------
 	G : nx.Graph
-	step : int
-		Current timestep
 	strategy : dict
 		Strategies of all nodes (0 for cooperator, 1 for defector)
 	step : int
