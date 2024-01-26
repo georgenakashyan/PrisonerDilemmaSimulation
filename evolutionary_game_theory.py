@@ -53,7 +53,12 @@ def _fermi_updating_rule(wi, wj, beta):
 	# *: i: defector, j: cooperator		| 0.4998815882 or 49.98815882%
 	# *: i: defector, j: defector		| 0.5 or 50%
 	# bug: CANNOT HANDLE LARGE NUMBERS BUT DECIMAL SLOWS DOWN PROGRAM A LOT
-	return 1 / (1 + Decimal(np.e) ** Decimal((-beta * (wj - wi))))
+	t1 = time.time()
+	chance = 1 / (1 + Decimal(np.e) ** Decimal((-beta * (wj - wi))))
+	t2 = time.time()
+	if (t2 - t1 > 1):
+		logging.warning("Chance Time: " + str(t2-t1))
+	return chance
 
 
 def one_replica_simulation(G, W, steps, x0, beta, choice_factor, title):
