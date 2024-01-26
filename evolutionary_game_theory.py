@@ -115,7 +115,7 @@ def one_replica_simulation(G, W, steps, x0, beta, choice_factor, title):
 				t1 = time.time()
 				make_simulation_photos(G, strategy, t, title)
 				t2 = time.time()
-				if (t2 - t1 > 1):
+				if (t2 - t1 > 1 or t == steps):
 					logging.warning("WARNING: Time to make photo at step " + str(t) + ": "+ str(t2-t1))
 
 	elif (choice_factor == 2):
@@ -140,7 +140,7 @@ def one_replica_simulation(G, W, steps, x0, beta, choice_factor, title):
 				t1 = time.time()
 				make_simulation_photos(G, strategy, t, title)
 				t2 = time.time()
-				if (t2 - t1 > 1):
+				if (t2 - t1 > 1 or t == steps):
 					logging.warning("WARNING: Time to make photo at step " + str(t) + ": "+ str(t2-t1))
 	p = np.mean(time_series)
 	return p, time_series
