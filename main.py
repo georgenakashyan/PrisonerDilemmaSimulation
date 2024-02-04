@@ -39,7 +39,7 @@ init_coop = float(input("\nInitial proportion of cooperators to defectors (float
 # *: Updating title to show games and turns.
 title = "{0}, {1} Games, {2} Turns".format(title, games, turns)
 
-# how players decide to change their strategy
+# How players decide to change their strategy
 beta = 0
 while True:
 	choice_factor = int(input("""\nWhat will players base their decision to change their strategy on? (Enter the choice number)
