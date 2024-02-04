@@ -65,7 +65,7 @@ while True:
 	else:
 		print("\nInvalid choice")
 
-# Players decide on payoff matrix
+# Choosing which payoff matrix
 # info: b = benefit given by cooperators, c = cost cooperators bear for giving out b
 # info: D is defector, C is cooperator. Left is 'i'or the current node, right is 'j' or neighbor node.
 # info: Assignment of values: [C:C,C:D], [D:C, D:D]
