@@ -8,7 +8,7 @@ from density_plots import *
 os.system('cls' if os.name == 'nt' else 'clear')
 print("[=================== Prisoner's Dilemma Game =======================]")
 while True:
-	graphChoice = input("\nWhich graph would you like to simulate? (ws for Watts-Strogatz, fb for Facebook, or 2d for two dimensional grid): ").lower()
+	graphChoice = input("\nWhich graph would you like to simulate? (ws for Watts-Strogatz, fb for Facebook, gh for GitHub, or 2d for two dimensional grid): ").lower()
 	if (graphChoice == "ws"):
 		print("\nNote: Default values for these questions are: 1000 Nodes, 4 Edges Per Node (on average), 10 games, 25 turns, 0.5 Cooperators.")
 		nodes = int(input("\nNumber of players/nodes (positive integer): "))
