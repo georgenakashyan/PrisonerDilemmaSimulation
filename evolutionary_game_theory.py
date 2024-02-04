@@ -111,7 +111,7 @@ def one_replica_simulation(G, W, steps, x0, beta, choice_factor, title):
 						new_strategy[i] = strategy.get(j)
 			strategy.update(new_strategy)  # update strategies
 			# TODO: Make this an option in the beginning that can be toggled on or off.
-			if (t % 10 == 0):
+			if (t % 10 == 0 or t == steps):
 				t1 = time.time()
 				make_simulation_photos(G, strategy, t, title)
 				t2 = time.time()
@@ -136,11 +136,11 @@ def one_replica_simulation(G, W, steps, x0, beta, choice_factor, title):
 				new_strategy[i] = strategy.get(probj[max(probj)])
 			strategy.update(new_strategy)  # update strategies
 			# TODO: Make this an option in the beginning that can be toggled on or off.
-			if (t % 10 == 0):
+			if (t % 10 == 0 or t == steps):
 				t1 = time.time()
 				make_simulation_photos(G, strategy, t, title)
 				t2 = time.time()
-				if (t2 - t1 > 1 or t == steps):
+				if (t2 - t1 > 1):
 					logging.warning("WARNING: Time to make photo at step " + str(t) + ": "+ str(t2-t1))
 	p = np.mean(time_series)
 	return p, time_series
