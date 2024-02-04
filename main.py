@@ -58,14 +58,25 @@ while True:
 	else:
 		print("\nInvalid choice")
 
-# payoff matrix
+# Players decide on payoff matrix
 # info: b = benefit given by cooperators, c = cost cooperators bear for giving out b
 # info: D is defector, C is cooperator. Left is 'i'or the current node, right is 'j' or neighbor node.
 # info: Assignment of values: [C:C,C:D], [D:C, D:D]
 # info: Values dictated by:   [b-c, -c], [b, 0]
-payoff = [[1.5, -0.3], [1.8, 0]]
-# info: Payoff for Facebook Dataset to be cooperator dominant. (k is 22 in FB)
-# payoff = [[14.5, -0.5], [15, 0]]
+while True:
+	choice_factor = int(input("""\nChoose your payoff matrix
+							\n(1) Watts-Strogatz's Normal Payoff - [[1.5, -0.3], [1.8, 0]]
+							\n(2) Facebook's Normal Payoff - [[14.5, -0.5], [15, 0]]
+							\n(3) GitHub's Normal Payoff - ???
+							\n"""))
+	if (choice_factor == 1):
+		payoff = [[1.5, -0.3], [1.8, 0]]
+		break
+	elif (choice_factor == 2):
+		payoff = [[14.5, -0.5], [15, 0]]
+		break
+	else:
+		print("\nInvalid choice")
 
 # running the simulation and making time series plot
 p_arr = plot_time_series(g, payoff, turns, init_coop, beta, games, choice_factor, title)
