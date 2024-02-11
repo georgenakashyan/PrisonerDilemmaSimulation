@@ -74,13 +74,16 @@ while True:
 	choice_factor = int(input("""\nChoose your payoff matrix
 							\n(1) Watts-Strogatz's Normal Payoff - [[1.5, -0.3], [1.8, 0]]
 							\n(2) Facebook's Normal Payoff - [[14.5, -0.5], [15, 0]]
-							\n(3) GitHub's Normal Payoff - ???
+							\n(3) GitHub's Normal Payoff - [[2.1, -0.3], [2.4, 0]]
 							\n"""))
 	if (choice_factor == 1):
 		payoff = [[1.5, -0.3], [1.8, 0]]
 		break
 	elif (choice_factor == 2):
 		payoff = [[14.5, -0.5], [15, 0]]
+		break
+	elif (choice_factor == 3):
+		payoff = [[2.1, -0.3], [2.4, 0]]
 		break
 	else:
 		print("\nInvalid choice")
