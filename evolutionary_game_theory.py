@@ -96,6 +96,13 @@ def one_replica_simulation(G, W, steps, x0, beta, choice_factor, title):
 	coop_dict = dict(zip(coop_nodes, coop_nodes))
 	coop_dict = coop_dict.fromkeys(coop_dict, 0)
 	strategy.update(coop_dict)
+ 
+	csvfile = open(title + '.csv', 'w', newline='')
+	spamwriter = csv.writer(csvfile, delimiter=',')
+	spamwriter.writerow(['Spam']*5 + ['Baked Beans'])
+	spamwriter.writerow(['spam', 'lovely spam', 'wonderful spam'])
+	# TODO: add csv file writer and open csv
+	# TODO: Write beginning values for csv and save and close
 
 	if (choice_factor == 1):
 		for t in range(steps):
