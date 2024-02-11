@@ -112,13 +112,7 @@ def one_replica_simulation(G, W, steps, x0, beta, choice_factor, title):
 						new_strategy[i] = strategy.get(j)
 			strategy.update(new_strategy)  # update strategies
 			# TODO: Make this an option in the beginning that can be toggled on or off.
-			if (t == 0 or steps%25 == 0 or t == steps):
-				print("Making photo for timestep " + str(t))
-				t1 = time.time()
-				make_simulation_photos(G, strategy, t, title)
-				t2 = time.time()
-				if (t2 - t1 > 1 or t == steps):
-					logging.warning("WARNING: Time to make photo at step " + str(t) + ": "+ str(t2-t1))
+			_decide_to_make_photos(t, steps, G, strategy, title)
 
 	elif (choice_factor == 2):
 		for t in range(steps):
@@ -138,13 +132,9 @@ def one_replica_simulation(G, W, steps, x0, beta, choice_factor, title):
 				new_strategy[i] = strategy.get(probj[max(probj)])
 			strategy.update(new_strategy)  # update strategies
 			# TODO: Make this an option in the beginning that can be toggled on or off.
-			if (t == 0 or steps%25 == 0 or t == steps):
-				print("Making photo for timestep " + str(t))
-				t1 = time.time()
-				make_simulation_photos(G, strategy, t, title)
-				t2 = time.time()
-				if (t2 - t1 > 1):
-					logging.warning("WARNING: Time to make photo at step " + str(t) + ": "+ str(t2-t1))
+			_decide_to_make_photos(t, steps, G, strategy, title)
+	# TODO: add csv file writer and open csv
+	# TODO: Write beginning values for csv and save and close
 	p = np.mean(time_series)
 	return p, time_series
 
@@ -241,3 +231,24 @@ def _get_payoff(G, i, W, strategy):
 	"""
 	payoff = sum([W[strategy.get(i)][strategy.get(j)] for j in G.neighbors(i)])
 	return payoff
+
+def _decide_to_make_photos(t, steps, G, strategy, title):
+	if (t == 0 or (t+1)%(steps/4) == 0 or t == steps-1):
+		print("Making photo for timestep " + str(t))
+		t1 = time.time()
+		make_simulation_photos(G, strategy, t, title)
+		t2 = time.time()
+		if (t2 - t1 > 1):
+			logging.warning("WARNING: Time to make photo at step " + str(t) + ": "+ str(t2-t1))
+
+def _make_influence_csv(fileName, headerRow, data):
+	"""
+	----------
+	fileName : String
+	headerRow : Array
+	data : Dictionary
+	"""
+	with open(fileName, 'w') as csvFile:
+		writer = csv.DictWriter(csvFile, fieldnames=headerRow)
+		writer.writeheader()
+		writer.writerows(data)
