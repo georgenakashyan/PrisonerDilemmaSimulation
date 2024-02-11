@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import networkx as nx
 import logging
 import time
+import csv
 from decimal import *
 from collections import deque
 
@@ -111,7 +112,8 @@ def one_replica_simulation(G, W, steps, x0, beta, choice_factor, title):
 						new_strategy[i] = strategy.get(j)
 			strategy.update(new_strategy)  # update strategies
 			# TODO: Make this an option in the beginning that can be toggled on or off.
-			if (t % 10 == 0 or t == steps):
+			if (t == 0 or steps%25 == 0 or t == steps):
+				print("Making photo for timestep " + str(t))
 				t1 = time.time()
 				make_simulation_photos(G, strategy, t, title)
 				t2 = time.time()
@@ -136,7 +138,8 @@ def one_replica_simulation(G, W, steps, x0, beta, choice_factor, title):
 				new_strategy[i] = strategy.get(probj[max(probj)])
 			strategy.update(new_strategy)  # update strategies
 			# TODO: Make this an option in the beginning that can be toggled on or off.
-			if (t % 10 == 0 or t == steps):
+			if (t == 0 or steps%25 == 0 or t == steps):
+				print("Making photo for timestep " + str(t))
 				t1 = time.time()
 				make_simulation_photos(G, strategy, t, title)
 				t2 = time.time()
