@@ -160,12 +160,12 @@ def make_simulation_photos(G, strategy, step, title):
 	"""
 	### make plot
 	path = os.path.split(os.path.realpath(__file__))
-	title = title + ", Step=" + str(step)
+	title = title + ", Step=" + str(step+1)
 	plt.figure(figsize=(10, 10))
 	ax = plt.gca()
 	my_pos = nx.spring_layout(G, seed = 100)
 	nx.draw(G, my_pos, node_size=10, width=0.3, ax=ax, node_color=['red' if s == 0 else 'royalblue' for s in strategy.values()])
-	plt.title("Time Step : %02d" %(step+1))
+	plt.title("Time Step : %02d" %(step+1), fontsize = 24)
 	red_patch = mpatches.Patch(color='red', label='Cooperative Player')
 	blue_patch = mpatches.Patch(color='royalblue', label='Non-Cooperative Player')
 
