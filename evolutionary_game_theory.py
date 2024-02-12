@@ -168,7 +168,6 @@ def make_simulation_photos(G, strategy, step, title):
 	plt.title("Time Step : %02d" %(step+1), fontsize = 24)
 	red_patch = mpatches.Patch(color='red', label='Cooperative Player')
 	blue_patch = mpatches.Patch(color='royalblue', label='Non-Cooperative Player')
-
 	plt.legend(handles=[red_patch, blue_patch], loc='lower right', fontsize = 16)
 	savePath = os.path.normpath(path[0] + "/reports/figures/film/%s.png" %(title))
 	plt.savefig(savePath, dpi = 500)
