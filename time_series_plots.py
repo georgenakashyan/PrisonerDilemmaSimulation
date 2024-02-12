@@ -82,6 +82,8 @@ def plot_time_series(G, W, steps, x0, beta, games, choice_factor, title, saving_
 	plt.title("Proportion of Cooperators per Time-Step {0}\n(Overall Avg: {1}% | Avg At Game End: {2}%)".format(title, str(round(np.mean(means_arr)*100, 3)), round(means_arr[steps-1]*100, 3)), fontsize=20)
 	plt.xlabel("Time Steps", fontsize=20)
 	plt.ylabel("Proportion of Cooperator Nodes", fontsize=20)
+	plt.xticks(fontsize=16)
+	plt.yticks(fontsize=16)
 	# saving file to reports folder
 	if saving_path:
 		plt.savefig(os.path.normpath(path[0] + "/reports/figures/time_series/" + title + " " + ".jpeg"), dpi=500)
