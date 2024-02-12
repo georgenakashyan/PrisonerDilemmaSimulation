@@ -86,18 +86,6 @@ def plot_time_series(G, W, steps, x0, beta, games, choice_factor, title, saving_
 	# saving file to reports folder
 	if saving_path:
 		plt.savefig(os.path.normpath(path[0] + "/reports/figures/time_series/" + title + " " + ".jpeg"), dpi=500)
-
-	# ?: Created a Mean line of all games but in a seperate graph. 
-	# ?: Not sure if it should be a part of the first one or seperate.
-	# plt.figure(figsize=(5, 5))
-	# plt.plot(list(means_dict.keys()), list(means_dict.values()), c='blue')
-	# plt.scatter(list(means_dict.keys()), list(means_dict.values()), c='blue')
-	# plt.title(title)
-	# plt.xlabel('Time Steps')
-	# plt.ylabel('Mean proportion of Cooperative Nodes')
-	# if saving_path:
-	#	 plt.savefig(os.path.normpath(path[0] + "/reports/figures/time_series/" + title + " - Mean" + ".jpeg"), dpi=500)
-	# ?: end
 	return means_arr
 
 def make_simulation_video(name, fps):
