@@ -79,7 +79,7 @@ def plot_time_series(G, W, steps, x0, beta, games, choice_factor, title, saving_
 	plt.setp(mean_line, linestyle="--")
 	plt.setp(mean_line, linewidth=3)
 	# labels
-	plt.title("Proportion of Cooperators per Time-Step {0}\n(Overall Avg: {1} | Avg At Game End: {2})".format(title, str(np.mean(means_arr)), means_arr[steps-1]), fontsize=20)
+	plt.title("Proportion of Cooperators per Time-Step {0}\n(Overall Avg: {1}% | Avg At Game End: {2}%)".format(title, str(round(np.mean(means_arr)*100, 3)), round(means_arr[steps-1]*100, 3)), fontsize=20)
 	plt.xlabel("Time Steps", fontsize=20)
 	plt.ylabel("Proportion of Cooperator Nodes", fontsize=20)
 	# saving file to reports folder
