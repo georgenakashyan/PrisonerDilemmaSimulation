@@ -80,9 +80,9 @@ def plot_time_series(G, W, steps, x0, beta, games, choice_factor, title, saving_
 	plt.setp(mean_line, linewidth=3)
 	# labels
 	# BUG: THIS OUTPUTS A RUNNING TOTAL OF THE VALUES IN means_arr, NOT THE MEAN OF THE LAST STEP.
-	plt.title("Proportion of Cooperators per Time-Step {0} (Avg At Game End: {1})".format(title, str(np.mean(means_arr))))
-	plt.xlabel("Time Steps")
-	plt.ylabel("Proportion of Cooperator Nodes")
+	plt.title("Proportion of Cooperators per Time-Step {0} (Avg At Game End: {1})".format(title, str(np.mean(means_arr))), fontsize=20)
+	plt.xlabel("Time Steps", fontsize=20)
+	plt.ylabel("Proportion of Cooperator Nodes", fontsize=20)
 	# saving file to reports folder
 	if saving_path:
 		plt.savefig(os.path.normpath(path[0] + "/reports/figures/time_series/" + title + " " + ".jpeg"), dpi=500)
