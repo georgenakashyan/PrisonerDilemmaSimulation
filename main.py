@@ -71,7 +71,7 @@ while True:
 # info: Assignment of values: [C:C,C:D], [D:C, D:D]
 # info: Values dictated by:   [b-c, -c], [b, 0]
 while True:
-	choice_factor = int(input("""\nChoose your payoff matrix
+	payoff_factor = int(input("""\nChoose your payoff matrix
 							\n(1) Watts-Strogatz's Normal Payoff - [[1.5, -0.3], [1.8, 0]]
 							\n(2) Facebook's Normal Payoff - [[14.5, -0.5], [15, 0]]
 							\n(3) GitHub's Normal Payoff - [[2.1, -0.3], [2.4, 0]]
