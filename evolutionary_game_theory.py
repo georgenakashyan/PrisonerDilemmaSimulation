@@ -247,12 +247,12 @@ def _decide_to_make_photos(t, steps, G, strategy, title):
 		if (t2 - t1 > 1):
 			logging.warning("WARNING: Time to make photo at step " + str(t) + ": "+ str(t2-t1))
 
-def _make_influence_csv(fileName, headerRow, data):
+def _make_influence_csv(title, strategy, G):
 	"""
 	----------
-	fileName : String
-	headerRow : Array
-	data : Dictionary
+	title : string
+	strategy : dict
+	G : nx.Graph
 	"""
 	with open(title + ", Start" + '.csv', 'w', newline='') as csvfile:
 		csvWriter = csv.writer(csvfile, delimiter=',')
