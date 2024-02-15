@@ -254,7 +254,17 @@ def _make_influence_csv(fileName, headerRow, data):
 	headerRow : Array
 	data : Dictionary
 	"""
-	with open(fileName, 'w') as csvFile:
-		writer = csv.DictWriter(csvFile, fieldnames=headerRow)
-		writer.writeheader()
-		writer.writerows(data)
+	with open(title + ", Start" + '.csv', 'w', newline='') as csvfile:
+		csvWriter = csv.writer(csvfile, delimiter=',')
+		csvWriter.writerow(["Node Number"] + ["Strategy (0 = cooperator, 1 = defector)"] + ["Degree"] + ["Neighbors with same strategy"])
+		stratkeys = list(strategy.keys())
+		stratvals = list(strategy.values())
+		for ci in range(len(G.nodes())-1):
+			csv_node = stratkeys[ci]
+			csv_strat = stratvals[ci]
+			csv_deg = G.degree(stratkeys[ci])
+			csv_same_deg = 0
+			for csv_neighbors in G.neighbors(stratkeys[ci]): 
+				if strategy.get(csv_neighbors) == csv_strat: 
+					csv_same_deg += 1
+			csvWriter.writerow([csv_node] + [csv_strat] + [csv_deg] + [csv_same_deg])
