@@ -27,7 +27,7 @@ while True:
 	elif (graphChoice == "gh"):
 		print("\nNote: Default values for these questions are: 10 Games, 25 Turns, 0.5 Cooperators.")
 		path = os.path.split(os.path.realpath(__file__))
-		g = nx.read_edgelist(os.path.normpath(path[0] + "/musae_git_edges.csv"), create_using = nx.Graph(), nodetype = int)
+		g = nx.read_edgelist(os.path.normpath(path[0] + "/musae_git_edges.csv_Undirected.csv"), create_using = nx.Graph(), nodetype = int)
 		# *: Updating title to match graph type.
 		title = "{0}".format(graphChoice.upper())
 		break
