@@ -74,7 +74,7 @@ while True:
 	payoff_factor = str(input("""\nChoose your payoff matrix
 							\n(ws) Watts-Strogatz's Normal Payoff - [[1.5, -0.3], [1.8, 0]]
 							\n(fb) Facebook's Normal Payoff - [[14.5, -0.5], [15, 0]]
-							\n(gh) GitHub's Normal Payoff - [[2.1, -0.3], [2.4, 0]]
+							\n(gh) GitHub's Normal Payoff - [[2.7, -0.3], [3, 0]]
 							\n"""))
 	if (payoff_factor == "ws"):
 		payoff = [[1.5, -0.3], [1.8, 0]]
@@ -83,7 +83,7 @@ while True:
 		payoff = [[14.5, -0.5], [15, 0]]
 		break
 	elif (payoff_factor == "gh"):
-		payoff = [[2.1, -0.3], [2.4, 0]]
+		payoff = [[2.7, -0.3], [3, 0]]
 		break
 	else:
 		print("\nInvalid choice")
