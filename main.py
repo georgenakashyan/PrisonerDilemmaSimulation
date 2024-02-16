@@ -71,23 +71,24 @@ while True:
 # info: Assignment of values: [C:C,C:D], [D:C, D:D]
 # info: Values dictated by:   [b-c, -c], [b, 0]
 while True:
-	payoff_factor = int(input("""\nChoose your payoff matrix
-							\n(1) Watts-Strogatz's Normal Payoff - [[1.5, -0.3], [1.8, 0]]
-							\n(2) Facebook's Normal Payoff - [[14.5, -0.5], [15, 0]]
-							\n(3) GitHub's Normal Payoff - [[2.1, -0.3], [2.4, 0]]
+	payoff_factor = str(input("""\nChoose your payoff matrix
+							\n(ws) Watts-Strogatz's Normal Payoff - [[1.5, -0.3], [1.8, 0]]
+							\n(fb) Facebook's Normal Payoff - [[14.5, -0.5], [15, 0]]
+							\n(gh) GitHub's Normal Payoff - [[2.1, -0.3], [2.4, 0]]
 							\n"""))
-	if (payoff_factor == 1):
+	if (payoff_factor == "ws"):
 		payoff = [[1.5, -0.3], [1.8, 0]]
 		break
-	elif (payoff_factor == 2):
+	elif (payoff_factor == "fb"):
 		payoff = [[14.5, -0.5], [15, 0]]
 		break
-	elif (payoff_factor == 3):
+	elif (payoff_factor == "gh"):
 		payoff = [[2.1, -0.3], [2.4, 0]]
 		break
 	else:
 		print("\nInvalid choice")
 
+title = title + ", " + payoff_factor + " payoff"
 # running the simulation and making time series plot
 p_arr = plot_time_series(g, payoff, turns, init_coop, beta, games, choice_factor, title)
 p = np.mean(p_arr)
