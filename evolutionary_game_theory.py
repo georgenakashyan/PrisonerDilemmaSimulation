@@ -232,7 +232,7 @@ def _get_payoff(G, i, W, strategy):
 	return payoff
 
 def _decide_to_make_photos(t, steps, G, strategy, title):
-	if (t == 0 or (t+1)%(steps/4) == 0 or t == steps-1):
+	if (t == 0 or (t+1)%(steps/2) == 0 or t == steps-1):
 		print("Making photo for timestep " + str(t))
 		t1 = time.time()
 		make_simulation_photos(G, strategy, t, title)
