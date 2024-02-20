@@ -75,6 +75,14 @@ while True:
 							\n(ws) Watts-Strogatz's Normal Payoff - [[1.5, -0.3], [1.8, 0]]
 							\n(fb) Facebook's Normal Payoff - [[14.5, -0.5], [15, 0]]
 							\n(gh) GitHub's Normal Payoff - [[2.7, -0.3], [3, 0]]
+							\n(gh_new) GitHub's NEW Payoff - [[14.7, -0.3], [15, 0]]
+							\n(gh_k15) GitHub's k15 Payoff - [[4.2, -0.3], [4.5, 0]]
+							\n(gh_k12) GitHub's k12 Payoff - [[3.3, -0.3], [3.6, 0]]
+							\n(gh_k55) GitHub's k55 Payoff - [[16.2, -0.3], [16.5, 0]]
+							\n(gh_k60) GitHub's k60 Payoff - [[17.7, -0.3], [18, 0]]
+							\n(gh_k65) GitHub's k65 Payoff - [[19.2, -0.3], [19.5, 0]]
+							\n(gh_k70) GitHub's k70 Payoff - [[20.7, -0.3], [21, 0]]
+							\n(gh_k75) GitHub's k75 Payoff - [[22.2, -0.3], [22.5, 0]]
 							\n"""))
 	if (payoff_factor == "ws"):
 		payoff = [[1.5, -0.3], [1.8, 0]]
@@ -84,6 +92,30 @@ while True:
 		break
 	elif (payoff_factor == "gh"):
 		payoff = [[2.7, -0.3], [3, 0]]
+		break
+	elif (payoff_factor == "gh_new"):
+		payoff = [[14.7, -0.3], [15, 0]]
+		break
+	elif (payoff_factor == "gh_k15"):
+		payoff = [[4.2, -0.3], [4.5, 0]]
+		break
+	elif (payoff_factor == "gh_k12"):
+		payoff = [[3.3, -0.3], [3.6, 0]]
+		break
+	elif (payoff_factor == "gh_k55"):
+		payoff = [[16.2, -0.3], [16.5, 0]]
+		break
+	elif (payoff_factor == "gh_k60"):
+		payoff = [[17.7, -0.3], [18, 0]]
+		break
+	elif (payoff_factor == "gh_k65"):
+		payoff = [[19.2, -0.3], [19.5, 0]]
+		break
+	elif (payoff_factor == "gh_k70"):
+		payoff = [[20.7, -0.3], [21, 0]]
+		break
+	elif (payoff_factor == "gh_k75"):
+		payoff = [[22.2, -0.3], [22.5, 0]]
 		break
 	else:
 		print("\nInvalid choice")
