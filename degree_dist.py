@@ -33,8 +33,16 @@ def makeDoubleHistogram(G1, G2):
     plt.ylabel('Frequency')
     plt.title('Degree Distribution')
     plt.show()
+    
+def findAvgClust(g):
+    avgClust = nx.average_clustering(g)
+    print(avgClust)
 
-G1 = nx.read_edgelist(os.path.normpath(path[0] + "/facebook_combined.txt.gz"), create_using = nx.Graph(), nodetype = int)
-G2 = nx.read_edgelist(os.path.normpath(path[0] + "/musae_git_edges.csv"), delimiter=",", create_using = nx.Graph(), nodetype = int)
-makeClusteringGraph(G1)
-makeClusteringGraph(G2)
+ws = nx.watts_strogatz_graph(1000, 4, 0.1)
+fb = nx.read_edgelist(os.path.normpath(path[0] + "/facebook_combined.txt.gz"), create_using = nx.Graph(), nodetype = int)
+gh = nx.read_edgelist(os.path.normpath(path[0] + "/musae_git_edges.csv"), delimiter=",", create_using = nx.Graph(), nodetype = int)
+#makeClusteringGraph(G1)
+#makeClusteringGraph(G2)
+findAvgClust(ws)
+findAvgClust(fb)
+findAvgClust(gh)
