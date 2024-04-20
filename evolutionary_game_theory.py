@@ -96,7 +96,8 @@ def one_replica_simulation(G, W, steps, x0, beta, choice_factor, title):
 	coop_dict = dict(zip(coop_nodes, coop_nodes))
 	coop_dict = coop_dict.fromkeys(coop_dict, 0)
 	strategy.update(coop_dict)
-	_make_influence_csv(title + ", Start", strategy, G)
+
+	influenceList = dict.fromkeys(strategy, 0)
 
 	if (choice_factor == 1):
 		for t in range(steps):
@@ -113,7 +114,7 @@ def one_replica_simulation(G, W, steps, x0, beta, choice_factor, title):
 						new_strategy[i] = strategy.get(j)
 			strategy.update(new_strategy)  # update strategies
 			# TODO: Make this an option in the beginning that can be toggled on or off.
-			_decide_to_make_photos(t, steps, G, strategy, title)
+			#_decide_to_make_photos(t, steps, G, strategy, title)
 
 	elif (choice_factor == 2):
 		for t in range(steps):
@@ -130,11 +131,12 @@ def one_replica_simulation(G, W, steps, x0, beta, choice_factor, title):
 					beta = G.degree(j)/(len(G.nodes)-1)
 					pij = _fermi_updating_rule(wi, wj, beta)  # probability of node i to adopt j strategy
 					probj[pij] = j
+				influenceList[probj[max(probj)]] += 1
 				new_strategy[i] = strategy.get(probj[max(probj)])
 			strategy.update(new_strategy)  # update strategies
 			# TODO: Make this an option in the beginning that can be toggled on or off.
-			_decide_to_make_photos(t, steps, G, strategy, title)
-	_make_influence_csv(title + ", End", strategy, G)
+			#_decide_to_make_photos(t, steps, G, strategy, title)
+	_make_influence_csv(title, strategy, G, influenceList)
 	p = np.mean(time_series)
 	return p, time_series
 
@@ -240,24 +242,22 @@ def _decide_to_make_photos(t, steps, G, strategy, title):
 		if (t2 - t1 > 1):
 			logging.warning("WARNING: Time to make photo at step " + str(t) + ": "+ str(t2-t1))
 
-def _make_influence_csv(title, strategy, G):
+def _make_influence_csv(title, strategy, G, influences):
 	"""
 	----------
 	title : string
 	strategy : dict
 	G : nx.Graph
 	"""
-	with open(title + ", Start" + '.csv', 'w', newline='') as csvfile:
+	with open(title + "_influence" + '.csv', 'w', newline='') as csvfile:
 		csvWriter = csv.writer(csvfile, delimiter=',')
-		csvWriter.writerow(["Node Number"] + ["Strategy (0 = cooperator, 1 = defector)"] + ["Degree"] + ["Neighbors with same strategy"])
+		csvWriter.writerow(["Node Number"] + ["Strategy (0 = cooperator, 1 = defector)"] + ["Degree"] + ["Number of Influences"])
 		stratkeys = list(strategy.keys())
 		stratvals = list(strategy.values())
-		for ci in range(len(G.nodes())-1):
-			csv_node = stratkeys[ci]
-			csv_strat = stratvals[ci]
-			csv_deg = G.degree(stratkeys[ci])
-			csv_same_deg = 0
-			for csv_neighbors in G.neighbors(stratkeys[ci]): 
-				if strategy.get(csv_neighbors) == csv_strat: 
-					csv_same_deg += 1
-			csvWriter.writerow([csv_node] + [csv_strat] + [csv_deg] + [csv_same_deg])
+		infvals = list(influences.values())
+		for i in range(len(G.nodes())-1):
+			csv_node = stratkeys[i]
+			csv_strat = stratvals[i]
+			csv_deg = G.degree(stratkeys[i])
+			csv_inf = infvals[i]
+			csvWriter.writerow([csv_node] + [csv_strat] + [csv_deg] + [csv_inf])
