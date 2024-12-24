@@ -11,7 +11,7 @@ Examining the interaction between agents in a well-mixed population has been a p
 ## Usage
 
 ### Setup
-Download Python 2 or Python 3 at (Python's official site)[https://www.python.org/downloads/].
+Download Python 2 or Python 3 at [Pythons official site](https://www.python.org/downloads/).
 
 ### Running
 Run the main.py file from the command line.
